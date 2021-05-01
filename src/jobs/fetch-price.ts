@@ -10,7 +10,7 @@ const redisPriceKey = process.env.REDIS_PRICE_KEY || 'price';
 const updateInterval = Number.parseInt(process.env.UPDATE_INTERVAL, 10) || 60*1000;
 const cryptocompareApiKey = process.env.CRYPTOCOMPARE_API_KEY;
 
-const fetchPrice = async (redis) => {
+const fetchAndSavePrice = async (redis) => {
   try {
     const { data } = await axios.get(
       'https://min-api.cryptocompare.com/data/price',
@@ -23,7 +23,7 @@ const fetchPrice = async (redis) => {
       },
     );
 
-    console.log(`Saving price (${JSON.stringify(data)}) to ${redisPriceKey}`);
+    console.log(`Saving price (${JSON.stringify(data)}) to '${redisPriceKey}'`);
     await redis.set(redisPriceKey, JSON.stringify(data));
   } catch(error) {
     console.error('Price fetching error:', error);
@@ -40,8 +40,16 @@ const main = async () => {
 
   redis.on('error', (error) => console.error('Redis Error:', error));
 
-  setInterval(() => fetchPrice(redis), updateInterval);
-  await fetchPrice(redis);
+  await fetchAndSavePrice(redis);
+  const interval = setInterval(() => fetchAndSavePrice(redis), updateInterval);
+
+  const gracefulShutdown = () => {
+    clearInterval(interval);
+    redis.quit();
+  };
+
+  process.on('SIGINT', gracefulShutdown);
+  process.on('SIGTERM', gracefulShutdown);
 };
 
 main().catch((error) => console.error('FATAL ERROR:', error));

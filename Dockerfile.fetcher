@@ -4,7 +4,7 @@ RUN npm install -g typescript
 
 COPY package-lock.json package.json /app/
 WORKDIR /app/
-RUN npm install
+RUN npm ci
 
 COPY src/jobs /app/src/jobs
 

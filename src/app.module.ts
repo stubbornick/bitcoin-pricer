@@ -5,8 +5,8 @@ import { ApiModule } from './api/api.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PricerModule } from './pricer/pricer.module';
-import { SocketModule } from './socket/socket.module';
 import { SocketGateway } from './socket.gateway';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   imports: [ApiModule, PricerModule, SocketModule],

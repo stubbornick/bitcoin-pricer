@@ -11,7 +11,7 @@ import { Server, Socket } from 'socket.io';
 
 import { PricerService } from '../pricer/pricer.service';
 
-@WebSocketGateway()
+@WebSocketGateway({ transports: ['websocket'] })
 export class SocketGateway
 implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
@@ -20,11 +20,6 @@ implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   private logger: Logger = new Logger(SocketGateway.name)
 
   constructor(private pricerService: PricerService) {}
-
-  @SubscribeMessage('hello')
-  public handleMessage(client: Socket, payload: string): void {
-    this.logger.log(`Message from client: ${payload}`);
-  }
 
   @SubscribeMessage('authorize')
   public handleAuthorize(client: Socket, name: string): void {

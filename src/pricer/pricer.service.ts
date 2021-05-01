@@ -37,8 +37,11 @@ export class PricerService {
 
   public removeSubscriber(userId: string): void {
     const user = this.users.get(userId);
-    this.users.delete(userId);
-    this.usersNames.delete(user.name);
+
+    if (user) {
+      this.users.delete(userId);
+      this.usersNames.delete(user.name);
+    }
   }
 
   public async pushPrice(userName: string): Promise<void> {
