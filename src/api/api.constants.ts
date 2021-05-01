@@ -1,0 +1,1 @@
+export const REDIS_PUB_CLIENT = 'REDIS_CLIENT_TAG';
