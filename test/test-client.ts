@@ -25,7 +25,6 @@ socket.on('connect', () => {
 
   socket.emit('hello', 'hello, world');
   socket.emit('authorize', 'hello');
-  // socket.emit('authorize', 'hello');
 });
 
 console.log('Connecting...');
