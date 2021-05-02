@@ -1,7 +1,6 @@
-#!/usr/bin/env node
-import * as SocketIO from 'socket.io-client';
+import * as io from 'socket.io-client';
 
-const socket = new SocketIO(
+const socket = io(
   'http://localhost:3000',
   {
     transports: ['websocket'],

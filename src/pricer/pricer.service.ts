@@ -45,7 +45,8 @@ export class PricerService {
   }
 
   public async pushPrice(userName: string): Promise<void> {
-    const price = JSON.parse(await this.redisClient.get(redisPriceKey));
+    const priceJson = await this.redisClient.get(redisPriceKey);
+    const price = JSON.parse(priceJson);
 
     const user = this.usersNames.get(userName);
     if (user) {
